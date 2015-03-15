@@ -36,3 +36,6 @@ During the week of March 16th, we plan on running a pilot for our experiment. We
 
 
 The pilot will be run over two days in one housing market (Washington DC). Each day, we will respond to 100 ads. On the first day, the experimenter will respond manually to each ad. On the second day, we will use our script to generate automatic responses.
+
+##Gmail Setup
+https://docs.google.com/document/d/1mxmIrZBapWtat5GFDYYqqhh7h2aG504XuAIV2U6v8BA/edit?usp=sharing
