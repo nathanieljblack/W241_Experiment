@@ -3,6 +3,7 @@ import smtplib
 import datetime
 import time
 import csv
+from emailagent import EmailAgent
 
 class Block(object):
     """Represents the combination of race and social status"""
@@ -10,27 +11,25 @@ class Block(object):
         self.postings = postings
         self.race = race
         self.social_status = social_status
-        self.sender_email = ''
+        self.error_messages = {}
         
         #Potential Variables
         if self.race == 'white':
-            self.names = ['Daniel','Dylan','Dustin','David','Drew']
+            self.name = 'Greg Baker'
         elif self.race == 'black':
-            self.names = ['DeAndre','DeShawn','Demetrius','Dorian','Darnell']
+            self.name = 'Jamal Jones'
         else:
             raise Exception
         
         if self.social_status == 'high':
-            self.jobs = ['an attorney',
-                        'an actuary',
-                        'a radiologist',
-                        'an electrical engineer',
-                        'a software developer',
-                        'an investment banker',
-                        'a mechanical engineer',
-                        'a management consultant',
+            self.jobs = ['a data scientist',
+                        'a physician',
                         'a dentist',
-                        'a physicist']
+                        'an IT manager',
+                        'a lawyer',
+                        'a financial manager',
+                        'an architect',
+                        'a pilot']
                         
             self.sender_school = " graduate "
        
@@ -50,58 +49,17 @@ class Block(object):
        
         else:
             raise Exception
-        
-        #Email addresses that we will send from
-        self.email_senders = {'Daniel':'field.experiments.w241@gmail.com',
-                        'Dylan':'field.experiments.w241@gmail.com',
-                        'Dustin':'field.experiments.w241@gmail.com',
-                        'David':'field.experiments.w241@gmail.com',
-                        'Drew':'field.experiments.w241@gmail.com',
-                        'DeAndre':'field.experiments.w241@gmail.com',
-                        'DeShawn':'field.experiments.w241@gmail.com',
-                        'Demetrius':'field.experiments.w241@gmail.com',
-                        'Dorian':'field.experiments.w241@gmail.com',
-                        'Darnell':'field.experiments.w241@gmail.com'
-                        }  
-        
-        #Need to update this with new email addresses and passwords                
-        self.email_password = '*******'
-        
     
-    
+        self.email_agent = EmailAgent(self.name, 'field.experiments.w241@gmail.com', '*****') 
+        
     def generate_sender(self):
         """Generates a random name, job, and email message"""
-        sender_name = random.sample(self.names, 1)[0]
         sender_job = random.sample(self.jobs, 1)[0]
-        sender_email = self.email_senders[sender_name] 
         email_body = "I'm writing to inquire about your ad on Craigslist. I recently finished" + self.sender_school \
                     + "school and took a job as " + sender_job + " and I am looking for a place to live.\n\n" \
                     + "If the If the apartment is still available, I would like to schedule a showing for next week.\n\n" \
-                    + "Thanks,\n" + sender_name
-        return sender_name, sender_job, sender_email, email_body, self.race, self.social_status
-                    
-    def create_email(self, from_addr, to_addr, email_body, subj, url):
-        """Create an email using given address, subject, and URL"""
-        message = "From: %s\r\nTo: %s\r\nSubject: %s\n\n" % (from_addr, to_addr, subj)
-        message += email_body + '\n\n'
-        message += url
-        return message
-        
-    #def send_email(self):
-    #    """Attempts to send email"""
-    #    try:
-    #        server = smtplib.SMTP('smtp.gmail.com', 587)
-    #        server.ehlo()
-    #        server.starttls()
-    #        server.ehlo
-    #        server.login(self.sender_email, self.email_password) 
-    #        server.sendmail(self.sender_email, self.receiver_email, self.message)
-    #        server.quit()
-    #        email_result = 'Success', str(datetime.datetime.now()), self.message
-    #    except smtplib.SMTPException as error:
-    #        email_result = error, str(datetime.datetime.now()), self.message
-    #    time.sleep(1)
-    #    return email_result
+                    + "Thanks,\n" + self.email_agent.name
+        return self.email_agent.name, sender_job, self.email_agent.email, email_body, self.race, self.social_status
     
     def write_email_messages(self):
         """Writes messages to file"""
@@ -149,15 +107,28 @@ class Block(object):
                             self.postings[posting]['sender_name'],
                             self.postings[posting]['sender_job'],
                             self.postings[posting]['sender_email']])
-                    
+                            
+    def write_errors(self):
+        """Writes errors to file"""
+        time_of_file = str(datetime.datetime.now())
+        if bool(self.error_messages):
+            with open(self.race + '_' + self.social_status + '_email_errors_' + time_of_file + '.csv', 'wb') as f:
+                w = csv.writer(f)
+                for posting in self.error_messages:
+                    w.writerow([self.error_messages[posting]])
+    
+    def start_server(self):
+        self.server = smtplib.SMTP('smtp.gmail.com', 587)
+        self.server.ehlo()
+        self.server.starttls()
+        self.server.ehlo 
+        self.server.login(self.email_agent.email, self.email_agent.password)
+        
+    
     def run_process(self):
         #Loops through each posting and attempts to send an email. Writes result and time back to posting
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.ehlo()
-        server.starttls()
-        server.ehlo
-        
-        
+        self.start_server()
+
         for posting in self.postings:
             #Unpack generate_sender into components
             self.postings[posting]['sender_name'], \
@@ -167,30 +138,27 @@ class Block(object):
             self.postings[posting]['sender_race'], \
             self.postings[posting]['sender_social_status'] = self.generate_sender()
             
-            message = self.create_email(self.postings[posting]['sender_email'],self.postings[posting]['email'],self.postings[posting]['email_body'],self.postings[posting]['title'], self.postings[posting]['url'])
+            message = self.email_agent.create_email(self.postings[posting]['sender_email'],
+                                                    self.postings[posting]['email'],
+                                                    self.postings[posting]['email_body'],
+                                                    self.postings[posting]['title'],
+                                                    self.postings[posting]['url'])
 
             try:
-                if self.postings[posting]['sender_email'] == self.sender_email:
-                    pass
-                else:
-                    server.login(self.postings[posting]['sender_email'], self.email_password) 
-                    self.sender_email = self.postings[posting]['sender_email']
-                    
-                server.sendmail(self.postings[posting]['sender_email'], self.postings[posting]['email'], message)
-                
+                self.server.sendmail(self.postings[posting]['sender_email'], self.postings[posting]['email'], message)
                 self.postings[posting]['result'] = 'Success'
                 self.postings[posting]['emailsent'] = str(datetime.datetime.now())
-                time.sleep(0.6)
+                time.sleep(1.5)
+                
             except smtplib.SMTPException as error:
                 self.postings[posting]['result'] = error
+                self.error_messages[posting] = error
                 self.postings[posting]['emailsent'] = str(datetime.datetime.now())
-                time.sleep(13)
-                server = smtplib.SMTP('smtp.gmail.com', 587)
-                server.ehlo()
-                server.starttls()
-                server.ehlo
-                self.sender_email = ''
+                time.sleep(6)
+                self.start_server()
 
-        server.quit()
+        self.server.quit()
         self.write_email_messages()
         self.write_email_results()
+        self.write_errors()
+        time.sleep(3)
