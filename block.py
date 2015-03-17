@@ -49,7 +49,8 @@ class Block(object):
        
         else:
             raise Exception
-    
+        
+        ###NEED TO UPDATE EMAIL AND PASSWORD
         self.email_agent = EmailAgent(self.name, 'field.experiments.w241@gmail.com', '*****') 
         
     def generate_sender(self):
@@ -115,7 +116,7 @@ class Block(object):
             with open(self.race + '_' + self.social_status + '_email_errors_' + time_of_file + '.csv', 'wb') as f:
                 w = csv.writer(f)
                 for posting in self.error_messages:
-                    w.writerow([self.error_messages[posting]])
+                    w.writerow([posting, self.error_messages[posting]])
     
     def start_server(self):
         self.server = smtplib.SMTP('smtp.gmail.com', 587)
