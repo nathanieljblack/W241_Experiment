@@ -55,4 +55,7 @@ class Experiment(object):
         #Send emails and write results to file
         for block in self.blocks:
             block.run_process()
-        
+            
+if __name__ == '__main__':
+    pilot = Experiment('test_emails.txt')
+    
