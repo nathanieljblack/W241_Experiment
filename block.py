@@ -52,9 +52,9 @@ class Block(object):
         
         #Assign an email agent
         if self.race == 'white' and self.social_status == 'high':
-            self.email_agent = EmailAgent(self.name, 'greg.baker1790@gmail.com', 'Mids2015')
+            self.email_agent = EmailAgent(self.name, 'greg.baker1790@gmail.com', 'Mids2014')
         elif self.race == 'white' and self.social_status == 'low':
-            self.email_agent = EmailAgent(self.name, 'greg.baker1789@gmail.com', 'Mids2015')
+            self.email_agent = EmailAgent(self.name, 'greg.baker1789@gmail.com', 'Mids2014')
         elif self.race == 'black' and self.social_status == 'high':
             self.email_agent = EmailAgent(self.name, 'jamal.jones1790@gmail.com', 'Mids2015')
         elif self.race == 'black' and self.social_status == 'low':
