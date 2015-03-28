@@ -9,7 +9,7 @@ class Experiment(object):
         
         self.all_posting_ids = []
         self.postings = {}
-        with open(self.filename, 'rb') as f:
+        with open(self.filename, 'rU') as f:
             reader = csv.reader(f)
             reader.next()
             for row in reader:
