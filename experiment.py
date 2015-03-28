@@ -25,21 +25,18 @@ class Experiment(object):
                     'housing':row[7]
                     }
         
-        #Split into White/Black
-        self.white_ids = random.sample(self.all_posting_ids, len(self.all_posting_ids)/2)
-        self.black_ids = [x for x in self.all_posting_ids if x not in self.white_ids]
-        
-        #Split races into statuses
-        self.white_high_ids = random.sample(self.white_ids, len(self.white_ids)/2)
-        self.white_low_ids = [x for x in self.white_ids if x not in self.white_high_ids]
-        
-        self.black_high_ids = random.sample(self.black_ids, len(self.black_ids)/2)
-        self.black_low_ids = [x for x in self.black_ids if x not in self.black_high_ids]
-        
+        #Randomize the IDs
+        random.shuffle(self.all_posting_ids)
+
+        #Split into blocks
+        self.white_high_ids = self.all_posting_ids[0::4]
+        self.white_low_ids = self.all_posting_ids[1::4]
+        self.black_high_ids = self.all_posting_ids[2::4]
+        self.black_low_ids = self.all_posting_ids[3::4]
+
         #Split the postings based on posting ids
         self.white_high_postings = {i:self.postings[i] for i in self.white_high_ids}
         self.white_low_postings = {i:self.postings[i] for i in self.white_low_ids}
-        
         self.black_high_postings = {i:self.postings[i] for i in self.black_high_ids}
         self.black_low_postings = {i:self.postings[i] for i in self.black_low_ids}
         
