@@ -39,3 +39,7 @@ The pilot will be run over two days in one housing market (Washington DC). Each 
 
 ##Gmail Setup
 https://docs.google.com/document/d/1mxmIrZBapWtat5GFDYYqqhh7h2aG504XuAIV2U6v8BA/edit?usp=sharing
+
+##Pilot Email Addresses
+* Jamal Jones (jamal.jones1789@gmail.com)
+* Greg Baker (greg.baker1789@gmail.com)
