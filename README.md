@@ -48,6 +48,8 @@ https://docs.google.com/document/d/1mxmIrZBapWtat5GFDYYqqhh7h2aG504XuAIV2U6v8BA/
 Please install scrapy using:
   pip install scrapy
 
+To run the scraper:
+
 cd scrapy/<yourcity>
 scrapy crawl <yourcity>
 
