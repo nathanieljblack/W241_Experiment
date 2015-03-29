@@ -43,3 +43,12 @@ https://docs.google.com/document/d/1mxmIrZBapWtat5GFDYYqqhh7h2aG504XuAIV2U6v8BA/
 ##Pilot Email Addresses
 * Jamal Jones (jamal.jones1789@gmail.com)
 * Greg Baker (greg.baker1789@gmail.com)
+
+##Scraper instructions
+Please install scrapy using:
+  pip install scrapy
+
+cd scrapy/<yourcity>
+scrapy crawl <yourcity>
+
+It will take some time (perhaps about 10 min) to run as there is some builtin time delays to avoid blocking of the scraper. If it runs fine, there will be a scrapy.log file generated which has log messages from the run - this comes in handy if there is any problem in the run. There will be a .csv file generated which contains the relevant postings.
