@@ -50,7 +50,7 @@ Please install scrapy using:
 
 To run the scraper:
 
-cd scrapy/<yourcity>
-scrapy crawl <yourcity>
+cd scrapy/\<yourcity\>
+scrapy crawl \<yourcity\>
 
 It will take some time (perhaps about 10 min) to run as there is some builtin time delays to avoid blocking of the scraper. If it runs fine, there will be a scrapy.log file generated which has log messages from the run - this comes in handy if there is any problem in the run. There will be a .csv file generated which contains the relevant postings.
