@@ -6,7 +6,7 @@ Please install scrapy using:
 
 To run the scraper:
 ```
-cd scrapy/\<yourcity\>
+cd scrapy\<yourcity\>
 
 scrapy crawl \<yourcity\>
 ```
@@ -34,11 +34,11 @@ There are several Python scripts to run the process:
 * experiment.py - main class to run the experiment. Input textfile and # of emails as arguments.
 
 To run the script,
-1. Make sure you changed the gmail settings
-2. Update emailaddresses.py with your email addresses and passwords
-3. Place your input file in the same directory as the Python scripts
-4. In the bottom of the experiment.py script, change the filename to your filename.
-4. Run the command below
+* Make sure you changed the gmail settings
+* Update emailaddresses.py with your email addresses and passwords
+* Place your input file in the same directory as the Python scripts
+* In the bottom of the experiment.py script, change the filename to your filename.
+* Run the command below
 
 ```
 python experiment.py
