@@ -13,17 +13,19 @@ class Experiment(object):
             reader = csv.reader(f)
             reader.next()
             for row in reader:
-                self.all_posting_ids.append(row[4])
-                
-                self.postings[row[4]] = {'title':row[0],
-                    'url':row[1],
-                    'price':row[2],
-                    'email':row[3],
-                    'id':row[4],
-                    'location':row[5],
-                    'date':row[6],
-                    'housing':row[7]
-                    }
+
+                if row[3] != '':
+                    self.all_posting_ids.append(row[4])
+                    
+                    self.postings[row[4]] = {'title':row[0],
+                        'url':row[1],
+                        'price':row[2],
+                        'email':row[3],
+                        'id':row[4],
+                        'location':row[5],
+                        'date':row[6],
+                        'housing':row[7]
+                        }
         
         #Randomize the IDs
         if len(self.all_posting_ids) < sample_size:
