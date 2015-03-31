@@ -3,7 +3,7 @@ import random
 from block import Block
 class Experiment(object):
     
-    def __init__(self, input_file):
+    def __init__(self, input_file, sample_size):
         #filename = 'test_emails.txt'
         self.filename = input_file
         
@@ -26,13 +26,19 @@ class Experiment(object):
                     }
         
         #Randomize the IDs
-        random.shuffle(self.all_posting_ids)
+        if len(self.all_posting_ids) < sample_size:
+            self.sample_size = len(self.all_posting_ids)
+        else:
+            self.sample_size = sample_size
+
+        self.random_sample_ids = random.sample(self.all_posting_ids, self.sample_size)
+        #random.shuffle(self.all_posting_ids)
 
         #Split into blocks
-        self.white_high_ids = self.all_posting_ids[0::4]
-        self.white_low_ids = self.all_posting_ids[1::4]
-        self.black_high_ids = self.all_posting_ids[2::4]
-        self.black_low_ids = self.all_posting_ids[3::4]
+        self.white_high_ids = self.random_sample_ids[0::4]
+        self.white_low_ids = self.random_sample_ids[1::4]
+        self.black_high_ids = self.random_sample_ids[2::4]
+        self.black_low_ids = self.random_sample_ids[3::4]
 
         #Split the postings based on posting ids
         self.white_high_postings = {i:self.postings[i] for i in self.white_high_ids}
@@ -54,5 +60,5 @@ class Experiment(object):
             block.run_process()
             
 if __name__ == '__main__':
-    pilot = Experiment('test_emails.txt')
+    pilot = Experiment('cle_test.csv', 120)
     

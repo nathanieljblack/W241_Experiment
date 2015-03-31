@@ -3,7 +3,9 @@ import smtplib
 import datetime
 import time
 import csv
+import os
 from emailagent import EmailAgent
+from emailaddresses import EmailAddresses
 
 class Block(object):
     """Represents the combination of race and social status"""
@@ -12,6 +14,7 @@ class Block(object):
         self.race = race
         self.social_status = social_status
         self.error_messages = {}
+        email_addresses = EmailAddresses()
         
         #Potential Variables
         if self.race == 'white':
@@ -52,13 +55,13 @@ class Block(object):
         
         #Assign an email agent
         if self.race == 'white' and self.social_status == 'high':
-            self.email_agent = EmailAgent(self.name, 'greg.baker1790@gmail.com', 'Mids2014')
+            self.email_agent = EmailAgent(self.name, email_addresses.white_high_email[0], email_addresses.white_high_email[1])
         elif self.race == 'white' and self.social_status == 'low':
-            self.email_agent = EmailAgent(self.name, 'greg.baker1789@gmail.com', 'Mids2014')
+            self.email_agent = EmailAgent(self.name, email_addresses.white_low_email[0], email_addresses.white_low_email[1])
         elif self.race == 'black' and self.social_status == 'high':
-            self.email_agent = EmailAgent(self.name, 'jamal.jones1790@gmail.com', 'Mids2015')
+            self.email_agent = EmailAgent(self.name, email_addresses.black_high_email[0], email_addresses.black_high_email[1])
         elif self.race == 'black' and self.social_status == 'low':
-            self.email_agent = EmailAgent(self.name, 'jamal.jones1789@gmail.com', 'Mids2015')
+            self.email_agent = EmailAgent(self.name, email_addresses.black_low_email[0], email_addresses.black_low_email[1])
         else:
             raise Exception
         
@@ -168,7 +171,18 @@ class Block(object):
                 self.start_server()
 
         self.server.quit()
-        self.write_email_messages()
+
+        def mkdirp(directory):
+            if not os.path.isdir(directory):
+                os.makedirs(directory)
+        
+        mkdirp('email_results')
+        os.chdir('email_results')
         self.write_email_results()
+        os.chdir('..')
+
+        mkdirp('email_errors')
+        os.chdir('email_errors')
         self.write_errors()
+        os.chdir('..')
         time.sleep(3)

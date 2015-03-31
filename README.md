@@ -1,5 +1,49 @@
 #Racial Discrimination in Competitive Housing Markets
 
+##Scraper instructions
+Please install scrapy using:
+  pip install scrapy
+
+To run the scraper:
+```
+cd scrapy/\<yourcity\>
+
+scrapy crawl \<yourcity\>
+```
+
+It will take some time (perhaps about 10 min) to run as there is some builtin time delays to avoid blocking of the scraper. If it runs fine, there will be a scrapy.log file generated which has log messages from the run - this comes in handy if there is any problem in the run. There will be a .csv file generated which contains the relevant postings.
+
+##Email Setup  
+
+###Create 4 Email addresses
+e.g.  
+* Jamal Jones (jamal.jones1789@gmail.com)  
+* Greg Baker (greg.baker1789@gmail.com)  
+* Jamal Jones (jamal.jones1790@gmail.com)  
+* Greg Baker (greg.baker1790@gmail.com)  
+
+###CHANGE THE ACCOUNT SETTINGS ON THE GMAIL ACCOUNT
+https://docs.google.com/document/d/1mxmIrZBapWtat5GFDYYqqhh7h2aG504XuAIV2U6v8BA/edit?usp=sharing
+
+###Python Scripts
+
+There are several Python scripts to run the process:  
+* emailagent.py - simple object to hold email sender
+* emailaddresses.py - THIS NEEDS  TO BE UPDATED WITH YOUR EMAIL ADDRESSES AND PASSWORDS
+* block.py - this object does most of the email functions
+* experiment.py - main class to run the experiment. Input textfile and # of emails as arguments.
+
+To run the script,
+1. Make sure you changed the gmail settings
+2. Update emailaddresses.py with your email addresses and passwords
+3. Place your input file in the same directory as the Python scripts
+4. In the bottom of the experiment.py script, change the filename to your filename.
+4. Run the command below
+
+```
+python experiment.py
+```
+
 ##Group Members
 * Charlie Carbery (carberyc@gmail.com)
 * Malini Mittal (malini.mittal@gmail.com)
@@ -44,14 +88,4 @@ https://docs.google.com/document/d/1mxmIrZBapWtat5GFDYYqqhh7h2aG504XuAIV2U6v8BA/
 * Jamal Jones (jamal.jones1789@gmail.com)
 * Greg Baker (greg.baker1789@gmail.com)
 
-##Scraper instructions
-Please install scrapy using:
-  pip install scrapy
 
-To run the scraper:
-
-cd scrapy/\<yourcity\>
-
-scrapy crawl \<yourcity\>
-
-It will take some time (perhaps about 10 min) to run as there is some builtin time delays to avoid blocking of the scraper. If it runs fine, there will be a scrapy.log file generated which has log messages from the run - this comes in handy if there is any problem in the run. There will be a .csv file generated which contains the relevant postings.
