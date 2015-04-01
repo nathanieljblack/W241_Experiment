@@ -43,6 +43,7 @@ To run the script,
 ```
 python experiment.py
 ```
+It should take several minutes (~5) to send out all of the emails. There is an intentional delay to prevent Gmail rate limits. Results will be stored in the "email_results" and "email_errors" folders (several CSV files).
 
 ##Group Members
 * Charlie Carbery (carberyc@gmail.com)
