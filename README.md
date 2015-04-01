@@ -45,6 +45,45 @@ python experiment.py
 ```
 It should take several minutes (~5) to send out all of the emails. There is an intentional delay to prevent Gmail rate limits. Results will be stored in the "email_results" and "email_errors" folders (several CSV files).
 
+###Input Items
+
+*Names*  
+* Jamal Jones  
+* Greg Baker  
+
+*High-Paying Jobs*
+* 'a data scientist'  
+* 'a physician'  
+* 'a dentist'  
+* 'an IT manager'  
+* 'a lawyer'  
+* 'a financial manager'  
+* 'an architect'  
+* 'a pilot'  
+
+*Low-Paying Jobs*  
+* 'a chef'  
+* 'a dietetic technician'  
+* 'a fitness trainer'  
+* 'a social worker'  
+* 'a police officer'  
+* 'an elementary school teacher'  
+* 'a reporter'  
+* 'a medical assistant'  
+* 'an insurance appraiser'  
+* 'a waiter'  
+
+The high-paying jobs say they finished "graduate school" while the low-paying jobs say they finished "school".
+
+###Example Email  
+
+>I'm writing to inquire about your ad on Craigslist. I recently finished [graduate school/school] and took a job as [high job/low job] and I am looking for a place to live.
+>
+>If the apartment is still available, I would like to schedule a showing for next week.
+>
+>Thanks,
+>[Greg Baker/Jamal Jones]
+
 ##Group Members
 * Charlie Carbery (carberyc@gmail.com)
 * Malini Mittal (malini.mittal@gmail.com)
