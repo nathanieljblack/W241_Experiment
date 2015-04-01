@@ -70,7 +70,7 @@ class Block(object):
         sender_job = random.sample(self.jobs, 1)[0]
         email_body = "I'm writing to inquire about your ad on Craigslist. I recently finished" + self.sender_school \
                     + "school and took a job as " + sender_job + " and I am looking for a place to live.\n\n" \
-                    + "If the If the apartment is still available, I would like to schedule a showing for next week.\n\n" \
+                    + "If the apartment is still available, I would like to schedule a showing for next week.\n\n" \
                     + "Thanks,\n" + self.email_agent.name
         return self.email_agent.name, sender_job, self.email_agent.email, email_body, self.race, self.social_status
     
