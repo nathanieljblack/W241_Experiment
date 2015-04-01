@@ -41,7 +41,6 @@ class Block(object):
                         'a dietetic technician',
                         'a fitness trainer',
                         'a social worker',
-                        'a police officer',
                         'an elementary school teacher',
                         'a reporter',
                         'a medical assistant',
