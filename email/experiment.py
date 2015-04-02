@@ -1,20 +1,28 @@
 import csv
 import random
+import os
+import re
 from block import Block
 class Experiment(object):
     
     def __init__(self, input_file, sample_size):
-        #filename = 'test_emails.txt'
         self.filename = input_file
         
         self.all_posting_ids = []
         self.postings = {}
+
+        #Test for valid email
+        def valid_email(email_text):
+            if re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", email_text):
+                return True
+            else:
+                return False
+        
         with open(self.filename, 'rU') as f:
             reader = csv.reader(f)
             reader.next()
             for row in reader:
-
-                if row[3] != '':
+                if row[3] != '' and valid_email(row[3]):
                     self.all_posting_ids.append(row[4])
                     
                     self.postings[row[4]] = {'title':row[0],
@@ -41,6 +49,7 @@ class Experiment(object):
         self.white_low_ids = self.random_sample_ids[1::4]
         self.black_high_ids = self.random_sample_ids[2::4]
         self.black_low_ids = self.random_sample_ids[3::4]
+
 
         #Split the postings based on posting ids
         self.white_high_postings = {i:self.postings[i] for i in self.white_high_ids}
