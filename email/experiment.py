@@ -71,5 +71,5 @@ class Experiment(object):
             block.run_process()
             
 if __name__ == '__main__':
-    pilot = Experiment('cle_test.csv', 120)
+    pilot = Experiment('cle_test.csv', 160)
     

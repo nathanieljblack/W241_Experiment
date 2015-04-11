@@ -67,10 +67,16 @@ class Block(object):
     def generate_sender(self):
         """Generates a random name, job, and email message"""
         sender_job = random.sample(self.jobs, 1)[0]
-        email_body = "I'm writing to inquire about your ad on Craigslist. I recently finished" + self.sender_school \
-                    + "school and took a job as " + sender_job + " and I am looking for a place to live.\n\n" \
+        email_options = ["I'm writing to inquire about your ad on Craigslist. I recently took a job as " + sender_job \
+                    + " in the area and I am looking for a place to live.\n\n" \
                     + "If the posting is still available, I would like to schedule a showing for next week.\n\n" \
-                    + "Thanks,\n" + self.email_agent.name
+                    + "Thanks,\n" + self.email_agent.name,
+                    "Hi, I am interested in your Craigslist posting. I just started my job as " + sender_job + \
+                    " and would like to see the place.\n\n" + \
+                    "Please let me know when you are available.\n\n" + \
+                    self.email_agent.name]
+
+        email_body = random.sample(email_options, 1)[0]
         return self.email_agent.name, sender_job, self.email_agent.email, email_body, self.race, self.social_status
     
     def write_email_messages(self):
