@@ -45,6 +45,13 @@ python experiment.py
 ```
 It should take several minutes (~5) to send out all of the emails. There is an intentional delay to prevent Gmail rate limits. Results will be stored in the "email_results" and "email_errors" folders (several CSV files).
 
+### Automatically read emails and get outcome
+
+* Try (sudo) pip install imaplib, email, whatever_you_need
+* Put csv for an email from Nate's email sending script under reademail directory
+* python reademail.py --email_address <email> --email_password <password> --csv_input <white_low.csv> --csv_output <white_low_out.csv>
+* Run four times for your four email account
+
 ###Input Items
 
 *Names*  
