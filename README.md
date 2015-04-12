@@ -49,8 +49,14 @@ It should take several minutes (~5) to send out all of the emails. There is an i
 
 * Try (sudo) pip install imaplib, email, whatever_you_need
 * Put csv for an email from Nate's email sending script under reademail directory
-* python reademail.py --email_address <email> --email_password <password> --csv_input <white_low.csv> --csv_output <white_low_out.csv>
-* Run four times for your four email account
+* python reademail.py --email_address \<email\> --email_password \<password\> --csv_input \<white_low.csv\> --csv_output \<white_low_out.csv\>
+* Run four times for your four email accounts
+
+After run, please check the following scenarios:
+
+* Subject has special characters;
+* Owner sends under another new subject;
+* Finally, check the total number of valid incoming emails to see if it matches the generated csv file
 
 ###Input Items
 
