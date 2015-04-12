@@ -52,7 +52,7 @@ It should take several minutes (~5) to send out all of the emails. There is an i
 * python reademail.py --email_address \<email\> --email_password \<password\> --csv_input \<white_low.csv\> --csv_output \<white_low_out.csv\>
 * Run four times for your four email accounts
 
-After run, please check the following scenarios:
+After run, please check the following scenarios in your Gmail Inboxes:
 
 * Subject has special characters;
 * Owner sends under another new subject;
