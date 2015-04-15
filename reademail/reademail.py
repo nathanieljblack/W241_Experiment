@@ -16,7 +16,7 @@ import csv
 from datetime import datetime
 from dateutil import parser as dtparser
 
-experiment_datetime = dtparser.parse("2015-04-11 00:00:00-07:00")
+#start = dtparser.parse("2015-04-11 00:00:00-07:00")
 
 import base64
 
@@ -28,9 +28,10 @@ sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 prefix = '=?UTF-8?B?'
 suffix = '?='
 
+def reademail(emailaddress, emailpassword, csvinput, csvoutput, start_time, end_time):
 
-
-def reademail(emailaddress, emailpassword, csvinput, csvoutput):
+    start_dt = dtparser.parse(start_time)
+    end_dt = dtparser.parse(end_time)
 
     M = imaplib.IMAP4_SSL('imap.gmail.com')
 
@@ -66,7 +67,7 @@ def reademail(emailaddress, emailpassword, csvinput, csvoutput):
 
         dt = dtparser.parse(msg['Date'])
 
-        if dt > experiment_datetime:
+        if dt > start_dt and dt < end_dt:
             raw = msg['Subject']
 
             if "=?UTF-8?" in raw:
@@ -132,6 +133,9 @@ def _parse_arguments():
     parser.add_argument('--csv_input', help='CSV Input File')
     parser.add_argument('--csv_output', help='CSV Output File')
 
+    parser.add_argument('--start_time', help='Start Date&Time')
+    parser.add_argument('--end_time', help='End Date&Time')
+
     args = parser.parse_args()
     return args
 
@@ -140,4 +144,4 @@ def similar(a, b):
 
 if __name__ == '__main__':
     args = _parse_arguments()
-    pilot = reademail(args.email_address, args.email_password, args.csv_input, args.csv_output)
+    pilot = reademail(args.email_address, args.email_password, args.csv_input, args.csv_output, args.start_time, args.end_time)
