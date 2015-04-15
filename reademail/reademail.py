@@ -17,6 +17,7 @@ from datetime import datetime
 from dateutil import parser as dtparser
 
 experiment_datetime = dtparser.parse("2015-04-11 00:00:00-07:00")
+experiment_end_datetime = dtparser.parse("2015-04-13 17:00:00-7:00")
 
 import base64
 
@@ -66,7 +67,7 @@ def reademail(emailaddress, emailpassword, csvinput, csvoutput):
 
         dt = dtparser.parse(msg['Date'])
 
-        if dt > experiment_datetime:
+        if dt > experiment_datetime and dt < experiment_end_datetime:
             raw = msg['Subject']
 
             if "=?UTF-8?" in raw:
