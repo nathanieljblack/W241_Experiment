@@ -1,0 +1,191 @@
+---
+title: "Housing Discrimination"
+output: pdf_document
+---
+
+```{r warning=FALSE, message=FALSE}
+library(ggplot2)
+library(scales)
+library(reshape2)
+library(dplyr)
+setwd('/Users/nathanielblack/Downloads/')
+cl.data <- read.csv('w241_final_project.csv',header = T)
+#head(cl.data)
+
+cast.price <- function(text)
+  {
+  text2 = substr(text, 2, 15)
+  text2 = gsub(",", "", text2)
+  return(as.numeric(text2))
+  }
+
+cl.data['price_clean'] <- lapply(cl.data['price'], FUN = cast.price)
+summary(cl.data[c('sender_race','sender_social_status','sender_job','price_clean','outcome')])
+```
+
+```{r, echo=FALSE, warning=FALSE,fig.height=10, fig.width=12}
+sender.jobs.plot <- ggplot(aes(sender_job), data = cl.data) +
+                      geom_histogram() +
+                      ylab('Count') +
+                      xlab('') +
+                      ggtitle('Sender Jobs') +
+                      theme(axis.text.x=element_text(size=16, angle = 90),axis.text.y=element_text(size=16), axis.title.x = element_text(size=16),axis.title.y = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=16),plot.title = element_text(size=28))
+print(sender.jobs.plot)
+
+prices.plot <- ggplot(aes(y = price_clean, x = city), data = cl.data) +
+                      geom_boxplot() +
+                      ylab('Price') +
+                      scale_y_continuous(labels = dollar)+
+                      xlab('') +
+                      ggtitle('Prices') +
+                      theme(axis.text.x=element_text(size=16, angle = 90),axis.text.y=element_text(size=16), axis.title.x = element_text(size=16),axis.title.y = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=16),plot.title = element_text(size=28))
+print(prices.plot)
+```
+
+There is an outlier in Raleigh...  
+
+```{r}
+outlier <- filter(cl.data,cl.data['price_clean'] > 1000000)
+outlier[c('id','price','city')]
+```
+  
+  
+Re-plot without outlier  
+  
+```{r echo=FALSE,fig.height=10, fig.width=12}
+prices.plot2 <- ggplot(aes(y = price_clean, x = city), data = na.omit(cl.data[cl.data['price_clean'] <1000000,])) +
+                      geom_boxplot() +
+                      ylab('Price') +
+                      scale_y_continuous(labels = dollar)+
+                      xlab('') +
+                      ggtitle('Prices') +
+                      theme(axis.text.x=element_text(size=16, angle = 90),axis.text.y=element_text(size=16), axis.title.x = element_text(size=16),axis.title.y = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=16),plot.title = element_text(size=28))
+print(prices.plot2)
+```
+
+
+#Response Rates  
+
+The overall response rate was 38.5%  
+
+```{r}
+overall.response <- mean(cl.data$outcome)
+overall.response
+```
+
+  
+##Race
+
+```{r echo =FALSE,fig.height=10, fig.width=12}
+cl.data.slim <- select(cl.data, sender_race, sender_social_status, outcome, city, sender_job)
+by.race <- group_by(cl.data.slim, sender_race)
+race.response <- summarize(by.race, response_rate = mean(outcome))
+print(race.response)
+
+race.plot <- ggplot(aes(x = sender_race, y = response_rate), data = race.response) +
+              geom_bar(stat='identity') +
+              geom_hline(aes(yintercept = overall.response), color='red',linetype=2, size=1.5) +
+              scale_y_continuous(labels = percent) +
+              ggtitle('Response Rate by Race') +
+              ylab('Response Rate') +
+              xlab('') +
+              theme(axis.text.x=element_text(size=16),axis.text.y=element_text(size=16), axis.title.x = element_text(size=16),axis.title.y = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=16),plot.title = element_text(size=28))
+              
+print(race.plot)
+```
+
+##Class  
+
+```{r echo =FALSE,fig.height=10, fig.width=12}
+by.class <- group_by(cl.data.slim, sender_social_status)
+class.response <- summarize(by.class, response_rate = mean(outcome))
+print(class.response)
+
+class.plot <- ggplot(aes(x = sender_social_status, y = response_rate), data = class.response) +
+              geom_bar(stat='identity') +
+              geom_hline(aes(yintercept = overall.response), color='red', linetype=2, size=1.5) +
+              scale_y_continuous(labels = percent) +
+              ggtitle('Response Rate by Class') +
+              ylab('Response Rate') +
+              xlab('') +
+              theme(axis.text.x=element_text(size=16),axis.text.y=element_text(size=16), axis.title.x = element_text(size=16),axis.title.y = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=16),plot.title = element_text(size=28))
+              
+print(class.plot)
+```
+
+##Response by City
+```{r echo =FALSE,fig.height=10, fig.width=12}
+by.city <- group_by(cl.data.slim, city)
+city.response <- summarize(by.city, response_rate = mean(outcome))
+print(city.response)
+
+city.plot <- ggplot(aes(x = city, y = response_rate), data = city.response) +
+              geom_bar(stat='identity')+
+              geom_hline(aes(yintercept = overall.response), color='red', linetype=2, size=1.5) +
+              scale_y_continuous(labels = percent) +
+              ggtitle('Response Rate by City') +
+              ylab('Response Rate') +
+              xlab('') +
+              theme(axis.text.x=element_text(size=16),axis.text.y=element_text(size=16), axis.title.x = element_text(size=16),axis.title.y = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=16),plot.title = element_text(size=28))
+              
+city.plot
+```
+
+##Race and Class  
+
+```{r echo =FALSE,fig.height=10, fig.width=12}
+by.race.class <- group_by(cl.data.slim, sender_social_status, sender_race)
+race.class.response <- summarize(by.race.class, response_rate = mean(outcome))
+print(race.class.response)
+
+race.class.plot <- ggplot(aes(x = sender_social_status, y = response_rate, fill = sender_race), data = race.class.response) +
+              geom_bar(stat='identity', position = 'dodge') +
+              geom_hline(aes(yintercept = overall.response), color='red', linetype=2, size=1.5) +
+              scale_y_continuous(labels = percent) +
+              scale_fill_manual(values = c("#F2F75D", "#5652FA"))+
+              ggtitle('Response Rate by Class & Race') +
+              ylab('Response Rate') +
+              xlab('') +
+              theme(axis.text.x=element_text(size=16),axis.text.y=element_text(size=16), axis.title.x = element_text(size=16),axis.title.y = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=16),plot.title = element_text(size=28))
+              
+print(race.class.plot)
+```
+   
+##Race and Class by City
+
+```{r echo =FALSE,fig.height=10, fig.width=12}
+by.race.class.city <- group_by(cl.data.slim, sender_social_status, sender_race, city)
+city.race.class.response <- summarize(by.race.class.city, response_rate = mean(outcome))
+print(city.race.class.response)
+
+city.race.class.plot <- ggplot(aes(x = sender_social_status, y = response_rate, fill = sender_race), data = city.race.class.response) +
+              facet_wrap(~city)+
+              geom_bar(stat='identity', position = 'dodge') +
+              geom_hline(aes(yintercept = overall.response), color='red', linetype=2, size=1.5) +
+              scale_y_continuous(labels = percent) +
+              scale_fill_manual(values = c("#F2F75D", "#5652FA"))+
+              ggtitle('Response Rate by Class & Race') +
+              ylab('Response Rate') +
+              xlab('') +
+              theme(axis.text.x=element_text(size=16),axis.text.y=element_text(size=16), axis.title.x = element_text(size=16),axis.title.y = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=16),plot.title = element_text(size=28))
+              
+print(city.race.class.plot)
+```
+
+##Response by Job
+```{r echo =FALSE,fig.height=10, fig.width=12}
+by.job <- group_by(cl.data.slim, sender_job, sender_social_status)
+job.response <- summarise(by.job, response_rate = mean(outcome))
+print(job.response)
+
+job.plot <- ggplot(aes(x = sender_job, y = response_rate, fill = sender_social_status), data = job.response) +
+              geom_bar(stat='identity') +
+              geom_hline(aes(yintercept = overall.response), color ='black', linetype=2, size=1.5) +
+              scale_y_continuous(labels = percent) +
+              ggtitle('Response Rate by Job') +
+              ylab('Response Rate') +
+              xlab('') +
+              theme(axis.text.x=element_text(size=16, angle = 90),axis.text.y=element_text(size=16), axis.title.x = element_text(size=16),axis.title.y = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=16),plot.title = element_text(size=28))
+              
+print(job.plot)
+```
